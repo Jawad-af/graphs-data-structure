@@ -124,6 +124,42 @@ void printGraph(struct Graph* graph) {
     }
 }
 
+// DFS algorithm implementaion used to traverse the adjacent nodes
+void dfs(Graph* g, int vertex, struct Stack* stk, int visited[])
+{
+    visited[vertex] = 1;
+    struct Node* current = g->adjList[vertex];
+    while (current)
+    {
+        if (!visited[current->data])
+            dfs(g, current->data, stk, visited);
+        current = current->next;
+    }
+    push(stk, vertex);
+}
+
+// Topological sort algorithm implementation
+void topological_sort(Graph* g)
+{
+    int visited[6];
+    for (int i = 0; i < 6; i++)
+    {
+        visited[i] = 0;
+    }
+    struct Stack* stk = createStack(6);
+    for (int i = 0; i < 6; i++)
+    {
+        if (!visited[i])
+        {
+            dfs(g, i, stk, visited);
+        }
+    }
+
+    while (!isEmpty(stk)) {
+        printf("%d  ", pop(stk));
+    }
+}
+
 int main() {
     // Create a graph with 6 vertices
     int V = 6;
